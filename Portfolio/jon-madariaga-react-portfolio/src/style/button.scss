@@ -1,0 +1,12 @@
+.btn-wrapper{
+    grid-column: 1 / -1; 
+    display: flex;
+    justify-items: end;
+
+
+    width: 100%;
+}
+
+.btn {
+    @include base-btn();
+}

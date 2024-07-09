@@ -22,7 +22,7 @@ export default class PorfolioContainer extends Component {
 
     portFolioItems () {
         return this.state.data.map(item => {
-            return <PortfolioItem key={item.id} title={item.name} url = {item.url} slug = {item.id}/>;
+            return <PortfolioItem key={item.id} item={item}/>;
         });
     }
 
@@ -36,7 +36,7 @@ export default class PorfolioContainer extends Component {
       .catch(error => {
         console.log(error);
       });
-      }
+    }
 
    
     handleFiltro (filter) {
@@ -60,20 +60,26 @@ export default class PorfolioContainer extends Component {
         }
 
         return (
-            <div> 
-                <h2>{this.state.pageTitle}</h2>
 
-                <button onClick={() => this.handleFiltro("Estudios de Mercado")}>Estudios de Mercado</button>
-                <button onClick={() => this.handleFiltro("Farmacía")}>Farmacia</button>
-                <button onClick={() => this.handleFiltro("Eventos")}>Eventos</button>
+                <div className='portfolio-items-wrapper'>
 
+                    <div className='btn-wrapper'>
+                        <button className='btn' onClick={() => this.handleFiltro("Social Media")}>Social Media</button>
+                        <button className='btn' onClick={() => this.handleFiltro("Technology")}>Technology</button>
+                        <button className='btn' onClick={() => this.handleFiltro("Elearning")}>eLearning</button>
+                        <button className='btn' onClick={() => this.handleFiltro("Eventos")}>Eventos</button>
+                        <button className='btn' onClick={() => this.handleFiltro("eCommerce")}>eCommerce</button>
+                    </div>
 
-                {this.portFolioItems()} 
+                    {this.portFolioItems()} 
 
+                </div>
                 
 
                 
-            </div>
+
+                
+           
         )
     }
 }
