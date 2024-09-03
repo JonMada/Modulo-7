@@ -1,6 +1,7 @@
 
 import React, { Component } from "react";
 import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default class Login extends Component {
   constructor(props) {
@@ -40,16 +41,19 @@ export default class Login extends Component {
       )
       .then(response => {
         if(response.data.status === "created") {
-            console.log("Puedes acceder...")
+            this.props.handleSuccessfulAuth();
         } else {
             this.setState ({
                 errorText: "Wrong email or password"
             })
+            this.props.handleUnsuccessfulAuth();
         }
       }).catch(error => {
         this.setState({
             errorText: "An error ocurred"
         })
+        this.props.handleUnsuccessfulAuth();
+        
       }) 
 
       ;
@@ -64,26 +68,33 @@ export default class Login extends Component {
 
         <div>{this.state.errorText}</div>
 
-        <form onSubmit={this.handleSubmit}>
-          <input
+        <form onSubmit={this.handleSubmit} className="auth-form-wrapper">
+          <div className="form-group">
+            <FontAwesomeIcon icon="envelope"/>
+
+            <input
             type="email"
             name="email"
             placeholder="Your email"
             value={this.state.email}
             onChange={this.handleChange}
-          />
+            />
 
-          <input
+          </div>
+         
+          <div className="form-group"> 
+            <FontAwesomeIcon icon="lock"/>
+            <input
             type="password"
             name="password"
             placeholder="Your password"
             value={this.state.password}
             onChange={this.handleChange}
-          />
-
-          <div>
-            <button type="submit">Login</button>
+            />
           </div>
+
+          <button className= "btn" type="submit">Login</button>
+          
         </form>
       </div>
     );
