@@ -15,6 +15,7 @@ export default class PorfolioContainer extends Component {
         };
 
         this.handleFiltro = this.handleFiltro.bind(this);
+        this.portFolioItems = this.portFolioItems.bind(this);
         
     }
 
@@ -26,12 +27,23 @@ export default class PorfolioContainer extends Component {
         });
     }
 
-    getPorfolioItems () {
+    getPorfolioItems (filter = null) {
         axios.get('https://jonmadariaga.devcamp.space/portfolio/portfolio_items')
       .then(response => {
-        this.setState ({
-            data: response.data.portfolio_items
-        })
+
+        if(filter){
+            this.setState ({
+                data: response.data.portfolio_items.filter( item => {
+                    return item.category === filter;
+                })
+            });
+
+        } else{
+            this.setState ({
+                data: response.data.portfolio_items
+            });
+        }
+
       })
       .catch(error => {
         console.log(error);
@@ -40,11 +52,12 @@ export default class PorfolioContainer extends Component {
 
    
     handleFiltro (filter) {
-        this.setState({
-            data: this.state.data.filter( item => {
-                return item.category === filter;
-            })
-        })
+        if(filter === "CLEAR_FILTERS"){
+            this.getPorfolioItems()
+        } else {
+
+            this.getPorfolioItems(filter);
+        }
     }
 
     componentDidMount(){
@@ -61,25 +74,28 @@ export default class PorfolioContainer extends Component {
 
         return (
 
-                <div className='portfolio-items-wrapper'>
+            <div className='homepage-wrapper'>
+                <div className='filter-links'>
 
-                    <div className='btn-wrapper'>
-                        <button className='btn' onClick={() => this.handleFiltro("Social Media")}>Social Media</button>
-                        <button className='btn' onClick={() => this.handleFiltro("Technology")}>Technology</button>
-                        <button className='btn' onClick={() => this.handleFiltro("Elearning")}>eLearning</button>
-                        <button className='btn' onClick={() => this.handleFiltro("Eventos")}>Eventos</button>
-                        <button className='btn' onClick={() => this.handleFiltro("eCommerce")}>eCommerce</button>
-                    </div>
+                    <button className='btn' onClick={() => this.handleFiltro("Social Media")}>Social Media</button>
+                    <button className='btn' onClick={() => this.handleFiltro("Technology")}>Technology</button>
+                    <button className='btn' onClick={() => this.handleFiltro("Elearning")}>eLearning</button>
+                    <button className='btn' onClick={() => this.handleFiltro("Eventos")}>Eventos</button>
+                    <button className='btn' onClick={() => this.handleFiltro("eCommerce")}>eCommerce</button>
+                    <button className='btn' onClick={() => this.handleFiltro("CLEAR_FILTERS")}>All</button>
+
+                </div>
+
+                <div className='portfolio-items-wrapper'>
 
                     {this.portFolioItems()} 
 
                 </div>
+            </div>
                 
 
                 
 
-                
-           
         )
     }
 }
